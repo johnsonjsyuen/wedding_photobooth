@@ -1,0 +1,30 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Gigi and Johnson Wedding photobooth</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', path='/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', path='/css/jumbotron.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    {% block content %}{% endblock %}
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ url_for('static', path='/js/jquery-3.3.1.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/bootstrap.min.js') }}"></script>
+  </body>
+</html>
