@@ -19,7 +19,9 @@ async def homepage(request):
         return templates.TemplateResponse(template, context)
     elif request.method == 'POST':
         form = await request.form()
-        for uploadFile in form.values():
+        print(form)
+        print(form.getlist('file'))
+        for uploadFile in form.getlist('file'):
             print(uploadFile.filename)
             print(uploadFile.content_type)
             with open('uploads/'+uploadFile.filename,'wb') as f:
@@ -32,4 +34,4 @@ routes = [Route('/',endpoint=homepage,methods=['GET','POST'])]
 app = Starlette(debug=True, routes=routes)
 
 if __name__ == "__main__":
-    uvicorn.run("api:app", host='0.0.0.0', port=8000, reload='true')
+    uvicorn.run("api:app", host='0.0.0.0', port=80, reload='true')
