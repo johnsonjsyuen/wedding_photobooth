@@ -11,6 +11,7 @@ import uvicorn
 templates = Jinja2Templates(directory='templates')
 
 DESTINATION_FOLDER = 'uploads/'
+ALLOWED_MIME_TYPES = ['image/jpeg','image/pjpeg','image/heif','image/heic']
 
 def index_template(context):
     template = "index.html"
@@ -24,9 +25,10 @@ async def homepage(request):
         form = await request.form()
         successful_uploads = 0
         for uploadFile in form.getlist('file'):
-            async with aiofiles.open(DESTINATION_FOLDER+uploadFile.filename,'wb') as f:
-                await f.write(await uploadFile.read())
-                successful_uploads += 1
+            if uploadFile.content_type in ALLOWED_MIME_TYPES:
+                async with aiofiles.open(DESTINATION_FOLDER+uploadFile.filename,'wb') as f:
+                    await f.write(await uploadFile.read())
+                    successful_uploads += 1
 
         context = {"request": request, "files_uploaded":successful_uploads}
         return index_template(context)
