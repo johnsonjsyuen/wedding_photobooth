@@ -1,22 +1,35 @@
 from starlette.applications import Starlette
-from starlette.responses import JSONResponse
+from starlette.staticfiles import StaticFiles
+from starlette.responses import HTMLResponse, JSONResponse
+from starlette.templating import Jinja2Templates
 from starlette.requests import Request
+from starlette.routing import Route
 import uvicorn
 
-app = Starlette(debug=True)
+
+templates = Jinja2Templates(directory='templates')
 
 
-@app.route('/')
-async def homepage(request: Request):
-    return JSONResponse({'hello': 'world'})
 
 
-@app.route('/upload')
-async def upload_photo(request: Request):
-    body = await Request.body()
-    with open('test', 'w') as f:
-        f.write(body)
-    return JSONResponse("wrote body to file")
+async def homepage(request):
+    if request.method == 'GET':
+        template = "index.html"
+        context = {"request": request}
+        return templates.TemplateResponse(template, context)
+    elif request.method == 'POST':
+        form = await request.form()
+        for uploadFile in form.values():
+            print(uploadFile.filename)
+            print(uploadFile.content_type)
+            with open('uploads/'+uploadFile.filename,'wb') as f:
+                f.write(await uploadFile.read())
 
-if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8888, loop='uvloop', workers=4)
+
+        return JSONResponse("wrote body to file")
+
+routes = [Route('/',endpoint=homepage,methods=['GET','POST'])]
+app = Starlette(debug=True, routes=routes)
+
+if __name__ == "__main__":
+    uvicorn.run("api:app", host='0.0.0.0', port=8000, reload='true')
