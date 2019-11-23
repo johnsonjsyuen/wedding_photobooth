@@ -15,7 +15,7 @@ templates = Jinja2Templates(directory='templates')
 async def homepage(request):
     if request.method == 'GET':
         template = "index.html"
-        context = {"request": request}
+        context = {"request": request, "files_uploaded":0}
         return templates.TemplateResponse(template, context)
     elif request.method == 'POST':
         form = await request.form()

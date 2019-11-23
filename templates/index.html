@@ -7,18 +7,26 @@
   <div class="jumbotron">
     <div class="container">
       <h1 class="display-3">Gigi and Johnson Wedding photobooth</h1>
-      <p>Select and upload your photos here and they will appear on the computer connected to the printer.</p>
+      {% if files_uploaded == 0 %}
+      <h3>Select and upload your photos here and they will appear on the computer connected to the printer.</h3>
       <h2>Select files to upload</h2>
-<form method="post" action="/" enctype="multipart/form-data">
-    <dl>
-		<p>
-			<input class="form-control-file" type="file" name="file" autocomplete="off" required multiple>
-		</p>
-    </dl>
-    <p>
-		<input class="btn btn-primary btn-lg" type="submit" value="Submit">
-	</p>
-</form>
+      {% endif %}
+
+      {% if files_uploaded > 0 %}
+      <h2><font color="red">{{files_uploaded}} files successfully uploaded</font> </h2>
+      <h3>Upload more files</h3>
+      {% endif %}
+
+        <form method="post" action="/" enctype="multipart/form-data">
+            <dl>
+            <p>
+              <input class="form-control-file" type="file" name="file" autocomplete="off" required multiple>
+            </p>
+            </dl>
+            <p>
+            <input class="btn btn-primary btn-lg" type="submit" value="Submit">
+          </p>
+        </form>
     </div>
   </div>
 
