@@ -4,36 +4,32 @@ from starlette.responses import HTMLResponse, JSONResponse
 from starlette.templating import Jinja2Templates
 from starlette.requests import Request
 from starlette.routing import Route, Mount
+import aiofiles
 import uvicorn
 
 
 templates = Jinja2Templates(directory='templates')
 
+DESTINATION_FOLDER = 'uploads/'
 
-
+def index_template(context):
+    template = "index.html"
+    return templates.TemplateResponse(template, context)
 
 async def homepage(request):
     if request.method == 'GET':
-        template = "index.html"
         context = {"request": request, "files_uploaded":0}
-        return templates.TemplateResponse(template, context)
+        return index_template(context)
     elif request.method == 'POST':
         form = await request.form()
-        print(form)
-        print(form.getlist('file'))
         successful_uploads = 0
         for uploadFile in form.getlist('file'):
-            print(uploadFile.filename)
-            print(uploadFile.content_type)
-            with open('uploads/'+uploadFile.filename,'wb') as f:
-                f.write(await uploadFile.read())
+            async with aiofiles.open(DESTINATION_FOLDER+uploadFile.filename,'wb') as f:
+                await f.write(await uploadFile.read())
                 successful_uploads += 1
 
-
-
-        template = "index.html"
         context = {"request": request, "files_uploaded":successful_uploads}
-        return templates.TemplateResponse(template, context)
+        return index_template(context)
 
 
 routes = [Route('/',endpoint=homepage,methods=['GET','POST']),
