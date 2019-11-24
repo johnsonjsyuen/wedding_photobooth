@@ -19,3 +19,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 python api.py
 ```
+
+## Type checking
+```
+mypy . --ignore-missing-imports
+```

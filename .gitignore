@@ -1,5 +1,6 @@
 venv/
 .idea/
+.mypy_cache/
 __pycache__/
 uploads/*
 !uploads/.gitkeep
