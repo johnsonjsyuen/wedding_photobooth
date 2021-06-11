@@ -4,7 +4,7 @@ httptools==0.0.13
 starlette==0.12.13
 uvicorn==0.10.4
 uvloop==0.14.0rc2
-websockets==8.1
+websockets==9.1
 aiofiles
 jinja2
 python-multipart
